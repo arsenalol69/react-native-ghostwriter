@@ -74,7 +74,7 @@ class Ghostwriter extends Component {
                 <Text style={this.stringStyles()}>
                     {this.state.string}
 					{this.cursorIsDiplayed() &&
-						<Text style={styles.cursor}>
+						<Text>
 							{this.state.cursorChar}
 						</Text>
                     }
@@ -269,9 +269,6 @@ const styles = StyleSheet.create({
     string: {
         fontSize: 18,
         fontWeight: "300"
-    },
-    cursor: {
-        fontSize: 18
     }
 });
 
