@@ -34,7 +34,8 @@ class Ghostwriter extends Component {
             cursorSpeed: 400,
             cursorIndex: 0,
             writing: false,
-            onComplete: () => {}
+            onComplete: () => {},
+	    loop: true,
         };
     }
 
@@ -146,6 +147,9 @@ class Ghostwriter extends Component {
 
         // All sequences complete
         if (finished) {
+	    if(this.state.loop){
+	    	this.initGhostwriter();
+	    }
             return this.state.onComplete();
         }
 
