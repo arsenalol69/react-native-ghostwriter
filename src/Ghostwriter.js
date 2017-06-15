@@ -35,7 +35,7 @@ class Ghostwriter extends Component {
             cursorIndex: 0,
             writing: false,
             onComplete: () => {},
-	    loop: true,
+			loop: false,
         };
     }
 
@@ -75,8 +75,8 @@ class Ghostwriter extends Component {
                 <Text style={this.stringStyles()}>
                     {this.state.string}
 					{this.cursorIsDiplayed() &&
-						<Text style={styles.cursor}>
-							{this.state.cursorChar}
+						<Text>
+								{this.state.cursorChar}
 						</Text>
                     }
                 </Text>
@@ -103,9 +103,9 @@ class Ghostwriter extends Component {
     }
 
     /**
-     * The styles for the cursor.
+     * The state of the cursor (displayed or not)
      *
-     * @returns {string}
+     * @returns {boolean}
      */
     cursorIsDiplayed() {
         return this.state.cursorIndex % 2 ? true : false;
@@ -147,9 +147,6 @@ class Ghostwriter extends Component {
 
         // All sequences complete
         if (finished) {
-	    if(this.state.loop){
-	    	this.initGhostwriter();
-	    }
             return this.state.onComplete();
         }
 
@@ -183,11 +180,19 @@ class Ghostwriter extends Component {
                 }
 
                 // If this is not the last sequence in the list of sequences...
-                if (seqId !== sequences.length - 1) {
+                if (seqId !== sequences.length - 1 || this.state.loop) {
                     this.beforeNextSequence(duration - 100);
                 }
-
-                this.nextSequence(sequences, seqId, charId, duration);
+				
+				//If this is the last sequence and loop is activated, restart the sequences :
+				if(seqId === sequences.length - 1 && this.state.loop)
+				{
+					this.write(sequences, 0, 0, duration);
+				}else {
+					this.nextSequence(sequences, seqId, charId, duration);
+				}
+				
+                
             }
         }, speed);
     }
@@ -234,11 +239,14 @@ class Ghostwriter extends Component {
      * @private
      */
     getSequences() {
-        let sequences = this.state.sequences;
+        let sequences = [];
 
-        util.arrayEach(sequences, (sequence, i) => {
+        util.arrayEach(this.state.sequences, (sequence, i) => {
             if (util.has(sequence, 'string')) {
-                sequences[i].string = sequence.string.split('');
+                sequences[i] = {
+			...sequence,
+			string : sequence.string.split('')
+		}
             } else {
                 throw new Error("Your sequences must all contain a 'string' property.");
             }
@@ -275,7 +283,7 @@ const styles = StyleSheet.create({
         fontWeight: "300"
     },
     cursor: {
-        fontSize: 18
+        
     }
 });
 
