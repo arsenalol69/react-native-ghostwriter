@@ -73,7 +73,7 @@ class Ghostwriter extends Component {
         return (
             <View style={this.containerStyles()}>
                 <Text style={this.stringStyles()}>
-                    {this.state.string}
+                    {" " + this.state.string}
 					{this.cursorIsDiplayed() &&
 						<Text>
 								{this.state.cursorChar}
