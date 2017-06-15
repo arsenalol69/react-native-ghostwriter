@@ -102,9 +102,9 @@ class Ghostwriter extends Component {
     }
 
     /**
-     * The styles for the cursor.
+     * The state of the cursor (displayed or not)
      *
-     * @returns {string}
+     * @returns {boolean}
      */
     cursorIsDiplayed() {
         return this.state.cursorIndex % 2 ? true : false;
