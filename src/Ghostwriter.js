@@ -73,9 +73,11 @@ class Ghostwriter extends Component {
             <View style={this.containerStyles()}>
                 <Text style={this.stringStyles()}>
                     {this.state.string}
-                    <Text style={this.cursorStyles()}>
-                        {this.state.cursorChar}
-                    </Text>
+					{this.cursorIsDiplayed() &&
+						<Text style={styles.cursor}>
+							{this.state.cursorChar}
+						</Text>
+                    }
                 </Text>
             </View>
         );
@@ -104,8 +106,8 @@ class Ghostwriter extends Component {
      *
      * @returns {string}
      */
-    cursorStyles() {
-        return this.state.cursorIndex % 2 ? styles.cursorShown : styles.cursorHidden;
+    cursorIsDiplayed() {
+        return this.state.cursorIndex % 2 ? true : false;
     }
 
     /**
@@ -268,11 +270,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "300"
     },
-    cursorShown: {
-        fontSize: 18
-    },
-    cursorHidden: {
-        opacity: 0,
+    cursor: {
         fontSize: 18
     }
 });
